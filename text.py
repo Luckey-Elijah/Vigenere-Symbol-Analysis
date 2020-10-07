@@ -1,5 +1,4 @@
 import requests
-from typing import Tuple
 
 
 def make_request(url: str) -> str:
