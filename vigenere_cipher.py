@@ -1,7 +1,7 @@
 import sys
 
 
-def _assert_char_key_alphabet(char, key, alphabet) -> None:
+def _assert_char_key_alphabet(char: str, key: str, alphabet: str) -> None:
     # Assert char and key are the characters
     if len(char) > 1 or len(key) > 1 or len(alphabet) != 26:
         print("Please provide a single character. You provided:")
@@ -13,7 +13,7 @@ def _assert_char_key_alphabet(char, key, alphabet) -> None:
         raise TypeError()
 
 
-def _encrypt_letter(char, key, alphabet) -> str:
+def _encrypt_letter(char: str, key: str, alphabet: str) -> str:
     """
     Encrypt an individual letter with a given `char`, `key`, and `alphabet`.
     ```txt
@@ -34,7 +34,7 @@ def _encrypt_letter(char, key, alphabet) -> str:
     return enc_char
 
 
-def _decrypt_letter(char, key, alphabet) -> str:
+def _decrypt_letter(char: str, key: str, alphabet: str) -> str:
     """
     Decrypt an individual letter with a given `char`, `key`, and `alphabet`.
     ```txt
@@ -85,7 +85,7 @@ class VigenereCipher():
     ```
     """
 
-    def __init__(self, key, plaintext=None, cipher_text=None, alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZ"):
+    def __init__(self, key: str, plaintext=None, cipher_text=None, alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZ"):
         # Assert key given.
         if (type(key) is not str):
             print("Key type: {}".format(type(key)))
@@ -157,13 +157,14 @@ class VigenereCipher():
 
             # obtain just the letter of this iteration
             key_char = full_key[char_index]
-            plntxt_char = plaintext[char_index]
+            plaintext_char = plaintext[char_index]
 
             # encrypts the single letter
-            ciph_char = _encrypt_letter(plntxt_char, key_char, self.alphabet)
+            cipher_char = _encrypt_letter(
+                plaintext_char, key_char, self.alphabet)
 
             # Append to the new *encrypted* letter to the cipher.
-            cipher_text = cipher_text + ciph_char
+            cipher_text = cipher_text + cipher_char
 
         if update_cipher_text is True:
             self.cipher_text = cipher_text
@@ -185,14 +186,14 @@ class VigenereCipher():
 
         for char_index in range(len(ciphertext)):
             key_char = full_key[char_index]
-            ciph_txt_char = ciphertext[char_index]
+            cipher_txt_char = ciphertext[char_index]
 
             # decrypt the current index key
-            plntxt_char = _decrypt_letter(
-                ciph_txt_char, key_char, self.alphabet)
+            plaintext_char = _decrypt_letter(
+                cipher_txt_char, key_char, self.alphabet)
 
             # append it to the plain text
-            plaintext_str = plaintext_str + plntxt_char
+            plaintext_str = plaintext_str + plaintext_char
 
         if update_plaintext is True:
             self.plaintext = plaintext_str
