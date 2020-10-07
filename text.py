@@ -1,9 +1,10 @@
 import requests
+from typing import Tuple
 
 
-def make_request(url) -> (int, str):
+def make_request(url: str) -> str:
     response = requests.get(url, headers={"User-Agent": ""})
-    return response.status_code, response.text
+    return response.text
 
 
 class TextResource():
@@ -15,10 +16,9 @@ class TextResource():
     ```
     """
 
-    def __init__(self, source, online_resource=False):
+    def __init__(self, source: str, online_resource=False):
         if online_resource is True:
-            self.status_code, self.text = make_request(source)
+            self.text = make_request(source)
         else:
-            self.status_code = None
             with open(source, "r") as f:
                 self.text = f.read()
