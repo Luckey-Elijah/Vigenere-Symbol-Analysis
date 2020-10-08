@@ -1,79 +1,7 @@
 import sys
-
-
-def _assert_char_key_alphabet(char: str, key: str, alphabet: str) -> None:
-    # Assert char and key are the characters
-    if len(char) > 1 or len(key) > 1 or len(alphabet) != 26:
-        print("Please provide a single character. You provided:")
-        print("char: {}".format(char))
-        print("key:  {}".format(key))
-        raise AssertionError()
-    elif type(char) is not str or type(key) is not str or type(alphabet) is not str:
-        print("Not the correct type.")
-        raise TypeError()
-
-
-def _encrypt_letter(char: str, key: str, alphabet: str) -> str:
-    """
-    Encrypt an individual letter with a given `char`, `key`, and `alphabet`.
-    ```txt
-    E = (P + K) mod 26
-    ```
-    """
-
-    _assert_char_key_alphabet(char, key, alphabet)
-
-    if char not in alphabet:
-        return char
-
-    p = ord(char) - 65  # plaintext value
-    k = ord(key) - 65   # key value
-    e = (p + k) % 26    # encrypted value
-
-    enc_char = alphabet[e]
-    return enc_char
-
-
-def _decrypt_letter(char: str, key: str, alphabet: str) -> str:
-    """
-    Decrypt an individual letter with a given `char`, `key`, and `alphabet`.
-    ```txt
-    P = (E - K + 26) mod 26
-    ```
-    """
-
-    _assert_char_key_alphabet(char, key, alphabet)
-
-    # Takes care of non alpha characters
-    if char not in alphabet:
-        return char
-
-    # a value of 0 - 25
-    e = alphabet.index(char)
-
-    # a value 0 - 25
-    k = ord(key) - 65
-
-    # p
-    p = (e - k + 26) % 26 + 65
-
-    return chr(p)
-
-
-def remove_not_in_alphabet(text, alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZ"):
-    """
-    Removes non-alphabetic characters (including whitespace). [`a-zA-Z`].
-    """
-    # Assert text
-    if len(text) < 1 or type(text) is not str:
-        raise AssertionError()
-
-    trimmed_text = ""
-    for letter in text:
-        if letter in alphabet:
-            trimmed_text = trimmed_text + letter
-
-    return trimmed_text
+import character_frequency_analysis as cfa
+from text import TextResource
+from utils import assert_char_key_alphabet, encrypt_letter, decrypt_letter, remove_not_in_alphabet
 
 
 class VigenereCipher():
@@ -160,7 +88,7 @@ class VigenereCipher():
             plaintext_char = plaintext[char_index]
 
             # encrypts the single letter
-            cipher_char = _encrypt_letter(
+            cipher_char = encrypt_letter(
                 plaintext_char, key_char, self.alphabet)
 
             # Append to the new *encrypted* letter to the cipher.
@@ -189,7 +117,7 @@ class VigenereCipher():
             cipher_txt_char = ciphertext[char_index]
 
             # decrypt the current index key
-            plaintext_char = _decrypt_letter(
+            plaintext_char = decrypt_letter(
                 cipher_txt_char, key_char, self.alphabet)
 
             # append it to the plain text
@@ -199,3 +127,33 @@ class VigenereCipher():
             self.plaintext = plaintext_str
 
         return plaintext_str
+
+
+class VigenereCracker():
+    """
+    Used to estimate a key and plain text of a given cipher text.
+    If you omit the `symbol_frequencies` dictionary, a new one will be generated.
+    If you omit the `word_list_path` value, it will fetch an online word list.
+    """
+
+    def __init__(self, cipher_text: str, word_list_path=None, symbol_frequencies=None):
+        self.cipher_text = cipher_text
+
+        if symbol_frequencies is None or type(symbol_frequencies) is not dict:
+            self.map = cfa.create_frequency_map(cipher_text)
+
+        if word_list_path is None or type(word_list_path) is not str:
+            self.word_list_path = TextResource(
+                "http://www.mieliestronk.com/corncob_caps.txt", online_resource=True)
+
+    def crack_one_length(self, key_length: int):
+        """
+        Attempts to crack `self.cipher_text` assuming length is the provided `key_length`.
+        """
+        return
+
+    def crack_range_length(self, key_length_max: int):
+        """
+        Attempts to crack `self.cipher_text` assuming all lengths up to the `key_length_max` limit.
+        """
+        return

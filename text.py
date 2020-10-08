@@ -1,9 +1,5 @@
 import requests
-
-
-def make_request(url: str) -> str:
-    response = requests.get(url, headers={"User-Agent": ""})
-    return response.text
+from utils import make_request
 
 
 class TextResource():
