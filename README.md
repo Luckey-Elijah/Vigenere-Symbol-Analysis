@@ -8,7 +8,8 @@ python3 src/main.py
 
 ## Using Resources
 
-To access a simple `.txt` resource/file (encoded with UTF-8) use the `TextResource()` class. Set `online_resource=True` if you can access the resource online via a GET request.
+To access a simple `.txt` resource/file (encoded with UTF-8) use the `TextResource()` class.
+Set `online_resource=True` if you can access the resource online via a GET request.
 
 ```python
 # Access an online resource
@@ -46,15 +47,14 @@ Result:
 
 ## Usage
 
-Run:
-
-```bash
-$ python3 main.py
+```shell
+python3 src/main.py
 ```
 
 ## Using Resources
 
-To access a simple `.txt` resource/file (encoded with UTF-8) use the `TextResource()` class. Set `online_resource=True` if you can access the resource online via a GET request.
+To access a simple `.txt` resource/file (encoded with UTF-8) use the `TextResource()` class.
+Set `online_resource=True` if you can access the resource online via a GET request.
 
 ```python
 # Access an online resource
