@@ -41,8 +41,6 @@ class CharacterFrequencyAnalyzer():
 
         # prints the list
         for character in self.map:
-
-            # letter count
             count: int = self.map[character]
 
             # this index freq
