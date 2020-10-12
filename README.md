@@ -2,7 +2,11 @@
 
 ## Usage
 
-```shell
+```bash
+# install requirements
+pip3 install requirements.txt
+
+# run
 python3 src/main.py
 ```
 
@@ -30,7 +34,12 @@ of the Project Gutenberg License included with this eBook or online at
 www.gutenberg.org.  If you are not located in the United States, you’ll
 have to check the laws of the country where you are located before using
 this ebook.
+
 ...
+
+..
+
+.
 ```
 
 Otherwise you can access a local resource by providing the path to it.
@@ -110,7 +119,7 @@ DECRYPT : USEDTOPERFORMVIGENEREENCRYPTIONITDOESNTRETAINNONALPHACHARACTERS
 
 Use the `CharacterFrequencyAnalyzer()` class to perform analysis like below.
 
-In this example we'll bring all parts of the program together.
+In this example we'll bring parts of the program together.
 
 ```python
 # This README file
@@ -204,5 +213,99 @@ Results:
 |      Z |     57 |   2.29    |
 |      F |     48 |   1.93    |
 |      A |     34 |   1.36    |
++--------+--------+-----------+
+```
+
+## Cipher Cracking Utility
+
+Use the `VigenereCracker()` object to perform additional analysis directly to cipher text.
+
+Use the `VigenereCracker().crack_one_length()` method to perform analysis on the ciphertext for an assumed length.
+
+```python
+
+# the plaintext
+t = TextResource("example_literature/shakespeare.txt")
+
+# key
+k = "AB"
+
+# the ciphertext: v.encrypt()
+v = VigenereCipher(k, plaintext=t.text, )
+
+# cracking the cipher
+c = VigenereCracker(cipher_text=v.encrypt())
+
+# set up the
+assumed_key_len = 2
+maps = c.crack_one_length(assumed_key_len)
+
+for i in range(assumed_key_len):
+    analyzer = CharacterFrequencyAnalyzer(map=maps[i])
+    analyzer.print_frequency()
+```
+
+Results:
+
+```txt
++--------+--------+-----------+
+| LETTER | COUNTS | FREQUENCY |
++--------+--------+-----------+
+|      E | 239822 |   11.90   |
+|      T | 176307 |   8.75    |
+|      O | 165672 |   8.22    |
+|      A | 154561 |   7.67    |
+|      I | 134275 |   6.67    |
+|      S | 133180 |   6.61    |
+|      N | 130023 |   6.45    |
+|      H | 127745 |   6.34    |
+|      R | 125528 |   6.23    |
+|      L |  90390 |   4.49    |
+|      D |  78967 |   3.92    |
+|      U |  68466 |   3.40    |
+|      M |  58548 |   2.91    |
+|      Y |  49530 |   2.46    |
+|      W |  47760 |   2.37    |
+|      C |  45639 |   2.27    |
+|      F |  42932 |   2.13    |
+|      G |  36312 |   1.80    |
+|      B |  31795 |   1.58    |
+|      P |  30513 |   1.51    |
+|      V |  20074 |   1.00    |
+|      K |  18631 |   0.92    |
+|      X |   2678 |   0.13    |
+|      J |   2401 |   0.12    |
+|      Q |   1946 |   0.10    |
+|      Z |    873 |   0.04    |
++--------+--------+-----------+
++--------+--------+-----------+
+| LETTER | COUNTS | FREQUENCY |
++--------+--------+-----------+
+|      F | 240066 |   11.92   |
+|      U | 176346 |   8.75    |
+|      P | 165827 |   8.23    |
+|      B | 154383 |   7.66    |
+|      J | 134014 |   6.65    |
+|      T | 132848 |   6.59    |
+|      O | 129573 |   6.43    |
+|      I | 127459 |   6.33    |
+|      S | 125347 |   6.22    |
+|      M |  89935 |   4.46    |
+|      E |  79341 |   3.94    |
+|      V |  68459 |   3.40    |
+|      N |  58728 |   2.92    |
+|      Z |  49631 |   2.46    |
+|      X |  48203 |   2.39    |
+|      D |  45743 |   2.27    |
+|      G |  42843 |   2.13    |
+|      H |  36102 |   1.79    |
+|      C |  31998 |   1.59    |
+|      Q |  30638 |   1.52    |
+|      W |  20049 |   1.00    |
+|      L |  19023 |   0.94    |
+|      Y |   2657 |   0.13    |
+|      K |   2422 |   0.12    |
+|      R |   1997 |   0.10    |
+|      A |    936 |   0.05    |
 +--------+--------+-----------+
 ```
