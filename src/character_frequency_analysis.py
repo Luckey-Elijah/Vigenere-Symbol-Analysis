@@ -4,7 +4,7 @@ from utils import create_frequency_map, remove_not_in_alphabet
 
 class CharacterFrequencyAnalyzer():
     """
-    Used to analyze the characters of a given text based on an alphabet.\n
+    Used to analyze the characters of a given map, or text based on an alphabet.\n
     Usage:\n
     ```python
     >>> s = "This is the source string ... exclamation mark!"
@@ -13,12 +13,28 @@ class CharacterFrequencyAnalyzer():
     ```
     """
 
-    def __init__(self, source_string: str, alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZ"):
+    def __init__(self, text="",  map=None, alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZ",):
 
         self.text = remove_not_in_alphabet(
-            source_string.upper(), alphabet=alphabet)
-        self.length = len(self.text)
-        self.map = create_frequency_map(self.text)
+            text.upper(), alphabet=alphabet)
+
+        # evaluating where to determine length of the text
+
+        if type(map) is None:
+            __map: dict = {}
+            self.map = create_frequency_map(self.text, map=__map, sort=True)
+        else:
+            self.map = map
+        __length = len(self.text)
+        if __length < 1 and map is not None:
+            # case to use map
+            self.length = 0
+            for count in self.map.values():
+                self.length = self.length + count
+        elif map is None:
+            self.length = __length
+        else:
+            raise AssertionError()
 
     def print_frequency(self):
         """

@@ -1,5 +1,6 @@
 import sys
 import character_frequency_analysis as cfa
+import utils as utils
 from text import TextResource
 from utils import assert_char_key_alphabet, encrypt_letter, decrypt_letter, remove_not_in_alphabet
 
@@ -18,7 +19,7 @@ class VigenereCipher():
         if (type(key) is not str):
             print("Key type: {}".format(type(key)))
             raise TypeError()
-        elif (len(key) < 3):
+        elif (len(key) < 0):
             raise AssertionError()
         else:
             self.key = key
@@ -140,20 +141,30 @@ class VigenereCracker():
         self.cipher_text = cipher_text
 
         if symbol_frequencies is None or type(symbol_frequencies) is not dict:
-            self.map = cfa.create_frequency_map(cipher_text)
+            __map: dict = {}
+            self.map = cfa.create_frequency_map(cipher_text, __map)
 
         if word_list_path is None or type(word_list_path) is not str:
             self.word_list_path = TextResource(
                 "http://www.mieliestronk.com/corncob_caps.txt", online_resource=True)
 
-    def crack_one_length(self, key_length: int):
+    def crack_one_length(self, key_length: int) -> list:
+        # TODO: crack the password?
         """
         Attempts to crack `self.cipher_text` assuming length is the provided `key_length`.
         """
-        return
 
-    def crack_range_length(self, key_length_max: int):
-        """
-        Attempts to crack `self.cipher_text` assuming all lengths up to the `key_length_max` limit.
-        """
-        return
+        list_o_maps: list = []
+
+        if key_length < 1:
+            raise AssertionError()
+
+        for mod in range(key_length):
+            map: dict = {}
+            for index in range(len(self.cipher_text)):
+                if index % key_length == mod:
+                    map = utils.create_frequency_map(
+                        self.cipher_text[index], map, sort=True)
+            list_o_maps.append(map)
+
+        return list_o_maps

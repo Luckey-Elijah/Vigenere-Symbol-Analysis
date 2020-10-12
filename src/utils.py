@@ -128,7 +128,7 @@ def remove_not_in_alphabet(text, alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZ"):
     """
 
     # Assert text
-    if len(text) < 1 or type(text) is not str:
+    if type(text) is not str:
         raise AssertionError()
 
     trimmed_text = ""
