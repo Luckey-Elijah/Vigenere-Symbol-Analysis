@@ -4,7 +4,7 @@
 
 ```bash
 # install requirements
-pip3 install requirements.txt
+pip3 install -r requirements.txt
 
 # run
 python3 src/main.py
